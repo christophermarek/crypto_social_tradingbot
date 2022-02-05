@@ -19,12 +19,11 @@ export const schiff_stream = async (bearer_token) => {
 
     // Add our rules
     await client.v2.updateStreamRules({
-        add: [{ value: 'JavaScript' }, { value: 'NodeJS' }],
+        add: [{ value: 'from:PeterSchiff' }, ],
     });
 
     const stream = await client.v2.searchStream({
-        'tweet.fields': ['referenced_tweets', 'author_id'],
-        expansions: ['referenced_tweets.id'],
+        'tweet.fields': ['author_id', 'created_at', 'text']
     });
 
     // Enable auto reconnect
@@ -33,17 +32,24 @@ export const schiff_stream = async (bearer_token) => {
     try{
         stream.on(ETwitterStreamEvent.Data, async tweet => {
 
+            // tweet.data.text;
+            // tweet.data.author_id;
+            // tweet.data.created_at;
 
-            console.log(tweet)
+            
         
             //     // put tweet url, text, and date into db
             //     // can do buy calc on frontend
         
             //     // what about bot purchases? maybe later? I kinda wanna focus on the streams to be honest.
+            // when would i close the connection other than error? idk actually shoudlnt it be 24/7
+            // connections do reset though there is a rate limit feature that does this, need to figure it out
             });
     }catch (e){
         console.log('Error');
         console.log(e)
+
+        stream.close();
         // Need to log this somewhere on the server aswell.
     }
     

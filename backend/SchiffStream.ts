@@ -1,4 +1,5 @@
-import TwitterApi, { ETwitterStreamEvent } from 'twitter-api-v2';
+import TwitterApi, { ETwitterStreamEvent, TweetLikingUsersV2Paginator } from 'twitter-api-v2';
+import { SchiffStream, SchiffStreamType } from './Twitter_Streams/SchiffStreamBackend';
 // https://github.com/plhery/node-twitter-api-v2/blob/HEAD/doc/examples.md#Streamtweetsinrealtime
 
 console.log()
@@ -19,7 +20,7 @@ export const schiff_stream = async (bearer_token) => {
 
     // Add our rules
     await client.v2.updateStreamRules({
-        add: [{ value: 'from:PeterSchiff' }, ],
+        add: [{ value: 'from:chris_marek1' }, ],
     });
 
     const stream = await client.v2.searchStream({
@@ -36,7 +37,18 @@ export const schiff_stream = async (bearer_token) => {
             // tweet.data.author_id;
             // tweet.data.created_at;
 
-            
+            // ITS MORE THAN JUST A SCHIFF TWEET I NEED TO ANALYZE IF HE SAYS BTC OR BITCOIN IN IT ASWELL
+            // HE TWEETS ABOUT OTHER STUFF TO YOU KNOW!
+
+            // ok i need to test this without opening a stream obviosuly because i am doing something wrong gonna get banend
+            SchiffStream.create({text: tweet.data.text, author_id: tweet.data.author_id, created_at: tweet.data.created_at}, function (err, entry) {
+                if (err) {
+                    console.log(err)
+                    stream.close();
+                } else {
+                    console.log("Schiff Tweet successfully pushed to db");
+                }
+            });
         
             //     // put tweet url, text, and date into db
             //     // can do buy calc on frontend

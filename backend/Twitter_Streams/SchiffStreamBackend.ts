@@ -1,7 +1,7 @@
 import { model, Schema } from "mongoose"
 import { Response, Request } from "express"
 
-interface SchiffStreamType {
+export interface SchiffStreamType {
     _id: string,
     text: string,
     author_id: string,
@@ -10,7 +10,6 @@ interface SchiffStreamType {
 
 const SchiffStreamSchema: Schema = new Schema(
     {
-        _id: { type: String },
 
         text: { type: String },
 
@@ -21,9 +20,9 @@ const SchiffStreamSchema: Schema = new Schema(
     },
 )
 
-export const SchiffStream = model<SchiffStreamType>("SchiffStream", SchiffStreamSchema)
+export const SchiffStream = model<SchiffStreamType>("SchiffStreams", SchiffStreamSchema)
 
-export const getAllTweets = async (req: Request, res: Response): Promise<void> => {
+export const getAllSchiffTweets = async (req: Request, res: Response): Promise<void> => {
     try {
         const tweets: SchiffStreamType[] = await SchiffStream.find({}).exec();
         res.status(200).json({ tweets });

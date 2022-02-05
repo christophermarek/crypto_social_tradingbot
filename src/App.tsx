@@ -1,17 +1,39 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import { TwitterFeed } from './TwitterFeed';
 import { TwitterFeedProps, Twitter_Table_Row } from './Types/TwitterFeed';
-import { CoinGeckoClient } from 'coingecko-api-v3';
 
 function App() {
 
-    const client = new CoinGeckoClient({
-        timeout: 10000,
-        autoRetry: true,
-    });
-    const trendingSearch = await client.trendingSearch();
+    interface Coingecko_Coins_List {
+        id: string,
+        symbol: string,
+        name: string,
+        platforms: {
+            platform_name: string
+        }
+    }
 
+    // convert to type later
+    const [coinsList, setCoinsList] = useState(undefined);
+
+    const coingeckoUrl = (date: string) => {
+        return `https://api.coingecko.com/api/v3/coins/list?include_platform=true`;
+    };
+
+
+    const coingeckoFetch = async (date: string) => {
+        fetch(coingeckoUrl(date)).then((response) =>
+            response.json().then((jsonData) => {
+                console.log(jsonData);
+                setCoinsList(jsonData);
+            })
+        );
+    };
+
+    if(coinsList === undefined){
+        coingeckoFetch('1-1-2018')
+    }
 
     const twitter_feed: TwitterFeedProps = {
         feed_to_display: [

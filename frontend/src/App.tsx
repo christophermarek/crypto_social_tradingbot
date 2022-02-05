@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
+import { Bots } from './Bots';
 import { TwitterFeed } from './TwitterFeed';
 import { TwitterFeedProps, Twitter_Table_Row } from './Types/TwitterFeed';
 
@@ -14,8 +15,8 @@ function App() {
         }
     }
 
-    // convert to type later
-    const [coinsList, setCoinsList] = useState(undefined);
+    const [pageSelected, setPageSelected] = useState<string>('bots')
+    const [coinsList, setCoinsList] = useState<Coingecko_Coins_List | undefined>(undefined);
 
     const coingeckoUrl = (date: string) => {
         return `https://api.coingecko.com/api/v3/coins/list?include_platform=true`;
@@ -31,7 +32,7 @@ function App() {
         );
     };
 
-    if(coinsList === undefined){
+    if (coinsList === undefined) {
         coingeckoFetch('1-1-2018')
     }
 
@@ -50,7 +51,16 @@ function App() {
     return (
         <div className="App">
 
-            <TwitterFeed feed_to_display={twitter_feed.feed_to_display} />
+            <input type='button' value='view bots' onClick={() => setPageSelected('bots')}/>
+            <input type='button' value='view feed' onClick={() => setPageSelected('feed')}/>
+
+            {pageSelected === 'feed' &&
+                <TwitterFeed feed_to_display={twitter_feed.feed_to_display} />
+            }
+
+            {pageSelected === 'bots' &&
+                <Bots/>
+            }
 
         </div>
     );

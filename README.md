@@ -31,3 +31,8 @@ Frontend
 
 
 MVP FOR FIRST PART (SCHIFF TRADING BOT)
+
+
+Then second part
+-> setup a Twitter stream using a twitter npm package
+https://developer.twitter.com/en/docs/twitter-api/tweets/filtered-stream/integrate/build-a-rule

@@ -4,6 +4,10 @@ import { Bots } from './Bots';
 import { TwitterFeed } from './TwitterFeed';
 import { TwitterFeedProps, Twitter_Table_Row } from './Types/TwitterFeed';
 
+import { getSchiffTweets } from './API'
+import { APISchiffTweets } from './Types/API';
+
+
 function App() {
 
     interface Coingecko_Coins_List {
@@ -17,6 +21,7 @@ function App() {
 
     const [pageSelected, setPageSelected] = useState<string>('bots')
     const [coinsList, setCoinsList] = useState<Coingecko_Coins_List | undefined>(undefined);
+    const [schiffTweets, setSchiffTweets] = useState<APISchiffTweets[] | undefined>(undefined);
 
     const coingeckoUrl = (date: string) => {
         return `https://api.coingecko.com/api/v3/coins/list?include_platform=true`;
@@ -33,8 +38,18 @@ function App() {
     };
 
     if (coinsList === undefined) {
-        coingeckoFetch('1-1-2018')
+        // coingeckoFetch('1-1-2018')
     }
+
+    const loadAPIData = async () => {
+        if (schiffTweets === undefined) {
+            console.log('fetching schiff tweets')
+            let schiff_tweets = (await getSchiffTweets()).data;
+            setSchiffTweets(schiff_tweets);
+        }
+    }
+
+    loadAPIData()
 
     const twitter_feed: TwitterFeedProps = {
         feed_to_display: [
@@ -43,23 +58,21 @@ function App() {
             { coinname: 'ADA', mentions24hrs: '11', hashtags24hrs: '3928', sentiment: '-3000' },
             { coinname: 'FTX', mentions24hrs: '221321', hashtags24hrs: '324214', sentiment: '300' },
             { coinname: 'SOL', mentions24hrs: '22341', hashtags24hrs: '213213', sentiment: '450' },
-
         ]
     }
-
 
     return (
         <div className="App">
 
-            <input type='button' value='view bots' onClick={() => setPageSelected('bots')}/>
-            <input type='button' value='view feed' onClick={() => setPageSelected('feed')}/>
+            <input type='button' value='view bots' onClick={() => setPageSelected('bots')} />
+            <input type='button' value='view feed' onClick={() => setPageSelected('feed')} />
 
             {pageSelected === 'feed' &&
                 <TwitterFeed feed_to_display={twitter_feed.feed_to_display} />
             }
 
             {pageSelected === 'bots' &&
-                <Bots/>
+                <Bots />
             }
 
         </div>

@@ -25,7 +25,7 @@ For trading bot:
 Twitter data streams:
 1. Streams expire after 19 days I think, so cant keep them open forevery (easy solution I just need a way to check)
 2. 500,000 tweets allowed to stream a month. The problem is I cannot check how many I have reached other than on the twitter dashboard. Or if API req fails
-3. Limit on the number of streams I can open ( I think its only one or two to be honest )
+3. Limit on the number of streams I can open ( I think its only one  )
 
 
 Solutions:

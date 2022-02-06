@@ -1,5 +1,6 @@
 
 // https://docs.kucoin.com/#upcoming-changes
+// https://github.com/Kucoin/kucoin-node-sdk
 // starting here
 
 import API from 'kucoin-node-sdk';

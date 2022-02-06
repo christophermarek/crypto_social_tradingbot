@@ -1,16 +1,13 @@
 import TwitterApi, { ETwitterStreamEvent, TweetLikingUsersV2Paginator } from 'twitter-api-v2';
 import { postOrder } from './KucoinBot/tradingbot_kucoin';
-import { SchiffStream, SchiffStreamType } from './Twitter_Streams/SchiffStreamBackend';
-// https://github.com/plhery/node-twitter-api-v2/blob/HEAD/doc/examples.md#Streamtweetsinrealtime
+import { SchiffStream } from './Twitter_Streams/SchiffStreamBackend';
 const axios = require('axios')
 
-console.log()
 
 export const schiff_stream = async (bearer_token) => {
 
     // Client initialized
     const client = new TwitterApi(bearer_token);
-    // console.log(client)
 
     // Get and delete old rules if needed
     const rules = await client.v2.streamRules();

@@ -7,7 +7,6 @@ import API from 'kucoin-node-sdk';
 const { api, uuid } = require('./bot_config')
 
 API.init(api);
-// console.log(uuid);
 
 // add type definitions
 // https://github.com/Kucoin/kucoin-node-sdk/blob/master/src/rest/User/Account.js

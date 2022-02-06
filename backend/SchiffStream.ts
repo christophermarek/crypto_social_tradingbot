@@ -1,4 +1,5 @@
 import TwitterApi, { ETwitterStreamEvent, TweetLikingUsersV2Paginator } from 'twitter-api-v2';
+import { postOrder } from './KucoinBot/tradingbot_kucoin';
 import { SchiffStream, SchiffStreamType } from './Twitter_Streams/SchiffStreamBackend';
 // https://github.com/plhery/node-twitter-api-v2/blob/HEAD/doc/examples.md#Streamtweetsinrealtime
 const axios = require('axios')
@@ -48,10 +49,7 @@ export const schiff_stream = async (bearer_token) => {
                 // get btc price at time of tweet
                 let res = await axios.get(`https://api.coingecko.com/api/v3/coins/bitcoin/history?date=${formattedDate}&localization=false`);
 
-                // ITS MORE THAN JUST A SCHIFF TWEET I NEED TO ANALYZE IF HE SAYS BTC OR BITCOIN IN IT ASWELL
-                // HE TWEETS ABOUT OTHER STUFF TO YOU KNOW!
 
-                // ok i need to test this without opening a stream obviosuly because i am doing something wrong gonna get banend
                 SchiffStream.create({ text: tweet.data.text, created_at: tweet.data.created_at, btc_price_at_post: res.data.market_data.current_price.usd }, function (err, entry) {
                     if (err) {
                         console.log(err)
@@ -61,12 +59,23 @@ export const schiff_stream = async (bearer_token) => {
                     }
                 });
 
-                //     // put tweet url, text, and date into db
-                //     // can do buy calc on frontend
+                // place order
+                const order = {
+                    baseParams: {
+                        clientOid: Date.now(),
+                        side: 'buy',
+                        symbol: 'BTC-USDT',
+                        type: 'limit',
+                        tradeType: 'TRADE'
+                    },
+                    orderParams: {
+                        price: '1000',
+                        size: '1'
+                    }
+                }
+                const orderId = await postOrder(order.baseParams, order.orderParams);
+                console.log(`Order placed, with orderID: ${orderId}`);
 
-                //     // what about bot purchases? maybe later? I kinda wanna focus on the streams to be honest.
-                // when would i close the connection other than error? idk actually shoudlnt it be 24/7
-                // connections do reset though there is a rate limit feature that does this, need to figure it out
 
             } else {
                 // dont care about this tweet

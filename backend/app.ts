@@ -2,7 +2,6 @@ import express from 'express';
 const { MongoClient } = require('mongodb');
 import mongoose from 'mongoose'
 import cors from 'cors'
-
 import { schiff_stream } from './SchiffStream';
 import routes from './routes';
 
@@ -10,20 +9,19 @@ const app = express();
 const port = 8000;
 
 require('dotenv').config();
-// console.log(process.env.TWITTER_BEARER_TOKEN)
 
 // need to setup a load balancer with probably 10+ clients
 // and a proxy for each client so I dont get banned on all of them at the same time
 
 
-// Need to add routes to enable / disable bot from frontend, and see if it is
-// enabled / disabled
+// Need to add routes to enable / disable bot from frontend
 
 interface twitter_stream {
     name: string,
     active: boolean,
 }
 
+// Bot scheduler, temp placement right now
 export const twitter_streams: twitter_stream[] = [
     { name: 'SchiffStream', active: false }
 ]
@@ -49,10 +47,9 @@ const options = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     autoIndex: true,
-    connectTimeoutMS: 10000, // Give up initial connection after 10 seconds
-    socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
+    connectTimeoutMS: 10000, 
+    socketTimeoutMS: 45000, 
 }
-
 mongoose
     .connect(uri, options)
     .then(() => {

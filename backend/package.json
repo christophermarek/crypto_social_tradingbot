@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "nodemon app.ts",
-    "bot": "cd KucoinBot && nodemon tradingbot_kucoin.ts"
+    "bot": "cd KucoinBot && nodemon tradingbot_kucoin.ts",
+    "test_stream": "cd Twitter_Streams && nodemon GeneralCryptoStream.ts"
   },
   "author": "",
   "license": "ISC",

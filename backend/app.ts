@@ -2,8 +2,9 @@ import express from 'express';
 const { MongoClient } = require('mongodb');
 import mongoose from 'mongoose'
 import cors from 'cors'
-import { schiff_stream } from './SchiffStream';
+import { schiff_stream } from './Twitter_Streams/SchiffStream';
 import routes from './routes';
+import { general_crypto_stream } from './Twitter_Streams/GeneralCryptoStream';
 
 const app = express();
 const port = 8000;
@@ -23,16 +24,20 @@ interface twitter_stream {
 
 // Bot scheduler, temp placement right now
 export const twitter_streams: twitter_stream[] = [
-    { name: 'SchiffStream', active: false }
+    { name: 'SchiffStream', active: false },
+    { name: 'GeneralCryptoStream', active: true}
 ]
 
 for (let i = 0; i < twitter_streams.length; i++) {
     if (twitter_streams[i].active) {
-
         switch (twitter_streams[i].name) {
             case 'SchiffStream':
-                console.log('Starting up Schiff Stream')
-                schiff_stream(process.env.TWITTER_BEARER_TOKEN)
+                console.log('Starting up Schiff Stream');
+                schiff_stream(process.env.TWITTER_BEARER_TOKEN);
+                break;
+            case 'GeneralCryptoStream':
+                console.log('Starting up General Crypto Stream');
+                general_crypto_stream(process.env.TWITTER_BEARER_TOKEN);
                 break;
         }
     }

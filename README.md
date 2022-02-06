@@ -2,8 +2,8 @@
 Project Proposal:
 
 The problem with data analytics for the stock market or large cap coins is that retail traders do not impact the price as much as low cap cryptocurrencies.
-- If you can track analytics on lower cap coins
-
+- If you can track analytics on lower cap coins.
+- focus is on cryptocurrencies because it is an inefficient market.
 
 
 ## API's in use
@@ -33,7 +33,7 @@ Solutions:
 
 - for 2. and 3. I will need to create multiple api accounts, probably 10+ atleast to future proof this program if I want it to be fully autonomous when I am done. Each account will have to be created with proxy ip's so they wont get all banned at the same time. I also do not want my own twitter account to be banned.
 
-- for 2. and 3. I will need to create a load balancer that also uses a proxy for each stream  which  that tracks which accounts have failed, and open streams with new ones. With 10 accounts I can parse 5 million tweets a month, is this even a lot? I dont feel like it is. Especially for some popular topics.
+- for 2. and 3. I will need to create a load balancer that also uses a proxy for each stream that tracks which accounts/streams have failed, and open streams automatically with new ones. With 10 accounts I can parse 5 million tweets a month, is this even a lot? I dont feel like it is. Especially for some popular topics.
 
 - Creating a bot that to create more bots, this could be feasible but I should not over engineer a solution until I actually run into the problem of needing new bots right, why waste time on this right now.
 

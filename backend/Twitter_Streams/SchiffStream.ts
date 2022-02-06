@@ -1,6 +1,6 @@
-import TwitterApi, { ETwitterStreamEvent, TweetLikingUsersV2Paginator } from 'twitter-api-v2';
-import { postOrder } from './KucoinBot/tradingbot_kucoin';
-import { SchiffStream } from './Twitter_Streams/SchiffStreamBackend';
+import TwitterApi, { ETwitterStreamEvent } from 'twitter-api-v2';
+import { postOrder } from '../KucoinBot/tradingbot_kucoin';
+import { SchiffStream } from './SchiffStreamBackend';
 const axios = require('axios')
 
 
@@ -10,6 +10,7 @@ export const schiff_stream = async (bearer_token) => {
     const client = new TwitterApi(bearer_token);
 
     // Get and delete old rules if needed
+    // nescessary right now since I have multiple streams on the same api key
     const rules = await client.v2.streamRules();
     if (rules.data?.length) {
         await client.v2.updateStreamRules({

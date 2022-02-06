@@ -3,7 +3,7 @@ export interface APISchiffTweets {
     text:       string;
     author_id:  string;
     created_at: string;
-    btc_price?: string;
+    btc_price_at_post: string;
     __v?:       number;
 }
 

@@ -5,36 +5,19 @@ The problem with data analytics for the stock market or large cap coins is that 
 - If you can track analytics on lower cap coins
 
 
-Plan:
--> would I have to track realtime?
--> I already have my server running for that so I can just add it
-https://www.npmjs.com/package/twitter-api-v2
 
+## API's in use
+For twitter data fetching:
+- https://www.npmjs.com/package/twitter-api-v2
+- https://developer.twitter.com/en/docs/twitter-api/tweets/filtered-stream/integrate/build-a-rule
 
-OK so I forgot how annoying scraping these social media sites are with their rate limiting.
+For crypto pricing:
+- https://www.coingecko.com/en/api
 
-Probably work on the bot first and have a visualizer on the client.
--> with a way the client can modify the bot
--> then I can move onto data sources
-
-
-##  TRADING BOT PLAN
-
-Backend
-
-
-Frontend
-- The goal of the frontend is to be able to update bot paramaters & view bot trades. 
-- Create new bots on the front end.
-- Specify bot trading styles.
-
-
-MVP FOR FIRST PART (SCHIFF TRADING BOT)
-
-
-Then second part
--> setup a Twitter stream using a twitter npm package
-https://developer.twitter.com/en/docs/twitter-api/tweets/filtered-stream/integrate/build-a-rule
+For trading bot:
+- https://docs.kucoin.com/
+- Kucoin was chosen because there are more coins, it is also my primary trading platform, and no KYC required.
+- There is also a sandbox trading environment on Kucoin to test bots.
 
 
 ## PROJECT PAIN POINTS currently:

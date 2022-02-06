@@ -25,7 +25,7 @@ interface twitter_stream {
 }
 
 export const twitter_streams: twitter_stream[] = [
-    { name: 'SchiffStream', active: true }
+    { name: 'SchiffStream', active: false }
 ]
 
 for (let i = 0; i < twitter_streams.length; i++) {

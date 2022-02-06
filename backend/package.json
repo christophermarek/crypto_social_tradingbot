@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "nodemon app.ts"
+    "server": "nodemon app.ts",
+    "bot": "cd KucoinBot && nodemon tradingbot_kucoin.ts"
   },
   "author": "",
   "license": "ISC",
@@ -22,6 +23,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "express": "^4.17.2",
+    "kucoin-node-sdk": "^1.0.4",
     "mongoose": "^6.2.0",
     "twitter-api-v2": "^1.10.0"
   }

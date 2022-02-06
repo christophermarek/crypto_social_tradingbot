@@ -15,8 +15,9 @@ const SchiffStreamSchema: Schema = new Schema(
 
         author_id: { type: String },
 
-        created_at: { type: String }
+        created_at: { type: String },
 
+        btc_price_at_post: { type: String } 
     },
 )
 

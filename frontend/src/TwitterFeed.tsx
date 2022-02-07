@@ -19,6 +19,7 @@ export const TwitterFeed: React.FC<TwitterFeedProps> = ({ feed_to_display }) => 
                     </tr>
                 </thead>
                 <tbody>
+                    <p>CLick to view TWEET: USE the url format that that twitter url creator site makes with the tweet id.</p>
                     {feed_to_display.map((row: Twitter_Table_Row) =>
                         <tr key={row.coinname}>
                             <td>{row.coinname}</td>

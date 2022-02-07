@@ -3,7 +3,7 @@ import './App.css';
 import { Bots } from './Bots';
 import { TwitterFeed } from './TwitterFeed';
 import { TwitterFeedProps, Twitter_Table_Row } from './Types/TwitterFeed';
-
+// import { WebSocket } from './websocket_viewer'
 import { getAllBotInfo, getSchiffTweets } from './API'
 import { APIAllBotInfo, APISchiffTweets } from './Types/API';
 
@@ -11,6 +11,18 @@ import { APIAllBotInfo, APISchiffTweets } from './Types/API';
 // https://cheatcode.co/tutorials/how-to-set-up-a-websocket-client-with-javascript
 
 function App() {
+
+    useEffect(() => {
+        const ws = new WebSocket('ws://localhost:8000/websockets');
+
+        ws.onmessage = (evt: MessageEvent) => {
+            console.log(evt);
+            // const data: any = JSON.parse(evt.data);
+            // this.setState((prevState: State) => {
+            //     // return {data: prevState.data.concat(data).slice(-hertz * slidingTimeWindowSec * 1000)}
+            // })
+        };
+    });
 
     interface Coingecko_Coins_List {
         id: string,
@@ -29,7 +41,7 @@ function App() {
     const coingeckoUrl = (date: string) => {
         return `https://api.coingecko.com/api/v3/coins/list?include_platform=true`;
     };
-    
+
 
 
     const coingeckoFetch = async (date: string) => {
@@ -49,7 +61,7 @@ function App() {
     const loadAPIData = async () => {
         if (schiffTweets === undefined) {
             console.log('fetching schiff tweets');
-            let schiff_tweets:any = (await getSchiffTweets()).data;
+            let schiff_tweets: any = (await getSchiffTweets()).data;
             setSchiffTweets(schiff_tweets.tweets);
         }
         if (allBotInfo === undefined) {
@@ -76,6 +88,7 @@ function App() {
 
             <input type='button' value='view bots' onClick={() => setPageSelected('bots')} />
             <input type='button' value='view feed' onClick={() => setPageSelected('feed')} />
+            <input type='button' value='view ws' onClick={() => setPageSelected('ws')} />
 
             {pageSelected === 'feed' &&
                 <TwitterFeed feed_to_display={twitter_feed.feed_to_display} />
@@ -85,7 +98,7 @@ function App() {
                 <>
                     {allBotInfo !== undefined && schiffTweets !== undefined ?
                         (
-                            <Bots bot_info={allBotInfo} schiff_tweets={schiffTweets}/>
+                            <Bots bot_info={allBotInfo} schiff_tweets={schiffTweets} />
                         )
                         :
                         (
@@ -96,8 +109,16 @@ function App() {
                 </>
             }
 
+            {pageSelected === 'ws' &&
+                <div />
+            }
+
         </div>
     );
 }
 
 export default App;
+function componentDidMount() {
+    throw new Error('Function not implemented.');
+}
+

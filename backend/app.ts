@@ -5,6 +5,8 @@ import cors from 'cors'
 import { schiff_stream } from './Twitter_Streams/SchiffStream';
 import routes from './routes';
 import { general_crypto_stream } from './Twitter_Streams/GeneralCryptoStream';
+import websockets from './websockets';
+
 
 const app = express();
 const port = 8000;
@@ -25,7 +27,7 @@ interface twitter_stream {
 // Bot scheduler, temp placement right now
 export const twitter_streams: twitter_stream[] = [
     { name: 'SchiffStream', active: false },
-    { name: 'GeneralCryptoStream', active: true}
+    { name: 'GeneralCryptoStream', active: false }
 ]
 
 for (let i = 0; i < twitter_streams.length; i++) {
@@ -37,12 +39,12 @@ for (let i = 0; i < twitter_streams.length; i++) {
                 break;
             case 'GeneralCryptoStream':
                 console.log('Starting up General Crypto Stream');
-                general_crypto_stream(process.env.TWITTER_BEARER_TOKEN);
+                console.log(twitter_streams[i].active)
+                // general_crypto_stream(process.env.TWITTER_BEARER_TOKEN);
                 break;
         }
     }
 }
-
 
 app.use(cors())
 app.use(routes)
@@ -59,11 +61,15 @@ mongoose
     .connect(uri, options)
     .then(() => {
         console.log('Mongoose connection done')
-        app.listen(port, () => {
+        const server = app.listen(port, () => {
             console.log(`Server is running on port ${port}.`);
+
+
+            websockets(server);
         });
     })
     .catch((e) => {
         console.log('Mongoose connection error' + e)
     })
+
 

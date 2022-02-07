@@ -28,6 +28,14 @@ export const general_crypto_stream = async (bearer_token) => {
     const { sample: TwitterStreamData } = require('./sample_general_twitterstream');
     
     // these will come in a stream so I need to simulate them being streamed for testing
+    for(let i = 0; i < sample.length; i++){
+        console.log(sample[i]);
+
+        // data processing steps here
+
+        // DO SOCKET FIRST? then i can do the REST, atleast socket will look cool and I can just constantly refresh the same loop just add an artificial
+        // 10ms delay or something like that
+    }
 
     // console.log(sample);
     // // Client initialized

@@ -21,11 +21,14 @@
   },
   "dependencies": {
     "axios": "^0.25.0",
+    "body-parser": "^1.19.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "express": "^4.17.2",
     "kucoin-node-sdk": "^1.0.4",
     "mongoose": "^6.2.0",
-    "twitter-api-v2": "^1.10.0"
+    "query-string": "^7.1.1",
+    "twitter-api-v2": "^1.10.0",
+    "websocket": "^1.0.34"
   }
 }

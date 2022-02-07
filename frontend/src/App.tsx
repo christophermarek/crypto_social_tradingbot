@@ -8,6 +8,8 @@ import { getAllBotInfo, getSchiffTweets } from './API'
 import { APIAllBotInfo, APISchiffTweets } from './Types/API';
 
 
+// https://cheatcode.co/tutorials/how-to-set-up-a-websocket-client-with-javascript
+
 function App() {
 
     interface Coingecko_Coins_List {

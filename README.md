@@ -1,6 +1,11 @@
 
 Project Proposal:
 
+Momentum trading bot:
+- Utilize the social media data
+- Price data
+- and volume data
+
 The problem with data analytics for the stock market or large cap coins is that retail traders do not impact the price as much as low cap cryptocurrencies.
 - If you can track analytics on lower cap coins.
 - focus is on cryptocurrencies because it is an inefficient market.

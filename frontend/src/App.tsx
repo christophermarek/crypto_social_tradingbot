@@ -87,7 +87,6 @@ function App() {
 
             <input type='button' value='view bots' onClick={() => setPageSelected('bots')} />
             <input type='button' value='view feed' onClick={() => setPageSelected('feed')} />
-            <input type='button' value='view ws' onClick={() => setPageSelected('ws')} />
 
             {pageSelected === 'feed' &&
                 <TwitterFeed feed_to_display={twitter_feed.feed_to_display} />
@@ -101,16 +100,13 @@ function App() {
                         )
                         :
                         (
-                            <p>Still info from backend</p>
+                            <p>Loading info from backend</p>
                         )
 
                     }
                 </>
             }
 
-            {pageSelected === 'ws' &&
-                <div />
-            }
 
         </div>
     );

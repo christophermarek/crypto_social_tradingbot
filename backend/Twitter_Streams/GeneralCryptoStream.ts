@@ -8,8 +8,6 @@ export const general_crypto_stream = async (bearer_token) => {
 
     console.log('General Crypto Stream initialized');
 
-    
-
     const { sample } = require('./sample_general_twitterstream');
 
     // these will come in a stream so I need to simulate them being streamed for testing

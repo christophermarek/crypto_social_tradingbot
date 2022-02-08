@@ -6,7 +6,6 @@ import { schiff_stream } from './Twitter_Streams/SchiffStream';
 import routes from './routes';
 import { general_crypto_stream } from './Twitter_Streams/GeneralCryptoStream';
 // import websockets from './websockets';
-import { ServerToClientEvents, ClientToServerEvents, InterServerEvents, SocketData } from './socketio_types'
 import { Server } from 'socket.io';
 
 

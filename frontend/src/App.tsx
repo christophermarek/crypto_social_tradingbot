@@ -3,7 +3,6 @@ import './App.css';
 import { Bots } from './Bots';
 import { TwitterFeed } from './TwitterFeed';
 import { TwitterFeedProps, Twitter_Table_Row } from './Types/TwitterFeed';
-// import { WebSocket } from './websocket_viewer'
 import { getAllBotInfo, getSchiffTweets } from './API'
 import { APIAllBotInfo, APISchiffTweets } from './Types/API';
 
@@ -118,7 +117,5 @@ function App() {
 }
 
 export default App;
-function componentDidMount() {
-    throw new Error('Function not implemented.');
-}
+
 

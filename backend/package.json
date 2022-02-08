@@ -15,6 +15,7 @@
     "@types/express": "^4.17.13",
     "@types/mongoose": "^5.11.97",
     "@types/node": "^17.0.15",
+    "@types/socket.io": "^3.0.2",
     "nodemon": "^2.0.15",
     "ts-node": "^10.4.0",
     "typescript": "^4.5.5"
@@ -28,6 +29,7 @@
     "kucoin-node-sdk": "^1.0.4",
     "mongoose": "^6.2.0",
     "query-string": "^7.1.1",
+    "socket.io": "^4.4.1",
     "twitter-api-v2": "^1.10.0",
     "websocket": "^1.0.34"
   }

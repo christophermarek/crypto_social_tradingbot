@@ -1,7 +1,7 @@
 import queryString from "query-string";
 
-const websocketClient = (options:any = {}, onConnect = null) => {
-    let url = 'ws://localhost:8000/websockets'
+export const websocketClient = (options:any = {}, onConnect = null) => {
+    let url = 'ws://localhost:8001/websockets'
     if (options.queryParams) {
         url = `${url}?${queryString.stringify(options.queryParams)}`;
     }
@@ -20,7 +20,7 @@ const websocketClient = (options:any = {}, onConnect = null) => {
 
     client.addEventListener("message", (event) => {
         if (event?.data && options.onMessage) {
-            options.onMessage(JSON.parse(event.data));
+            console.log(options.onMessage(JSON.parse(event.data)));
         }
     });
 
@@ -37,5 +37,3 @@ const websocketClient = (options:any = {}, onConnect = null) => {
 
     return connection;
 };
-
-export default websocketClient;

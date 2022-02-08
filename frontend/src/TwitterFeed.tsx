@@ -1,13 +1,31 @@
 import { TwitterFeedProps, Twitter_Table_Row } from "./Types/TwitterFeed"
+import { websocketClient } from './websockets/client'
 
 export const TwitterFeed: React.FC<TwitterFeedProps> = ({ feed_to_display }) => {
 
-    // REAL TIME TWEET FEED FROM STREAM ASWELL?
-    // I do need to think about what coins I am going to setup streams for because I cant do hundreds.
+    //move up and control state with app so I dont keep creating connections every render 
+    // const ws_client = websocketClient();
+    
+    let recieved_messages = [];
+    let ws_connected = false;
+    websocketClient(
+        {
+          onMessage: (message: any) => {
+            console.log(message);
+          },
+          onDisconnect: () => {
+            // ws_connected = false;
+            // convert to state or it wont work
+          },
+        },
+        
+      );
 
     return (
         <>
             <p>Hello from Twitter Feed</p>
+            <p>CLick to view TWEET: USE the url format that that twitter url creator site makes with the tweet id.</p>
+
 
             <table>
                 <thead>
@@ -19,7 +37,6 @@ export const TwitterFeed: React.FC<TwitterFeedProps> = ({ feed_to_display }) => 
                     </tr>
                 </thead>
                 <tbody>
-                    <p>CLick to view TWEET: USE the url format that that twitter url creator site makes with the tweet id.</p>
                     {feed_to_display.map((row: Twitter_Table_Row) =>
                         <tr key={row.coinname}>
                             <td>{row.coinname}</td>

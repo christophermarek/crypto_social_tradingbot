@@ -6,22 +6,7 @@ import { TwitterFeedProps, Twitter_Table_Row } from './Types/TwitterFeed';
 import { getAllBotInfo, getSchiffTweets } from './API'
 import { APIAllBotInfo, APISchiffTweets } from './Types/API';
 
-
-// https://cheatcode.co/tutorials/how-to-set-up-a-websocket-client-with-javascript
-
 function App() {
-
-    useEffect(() => {
-        const ws = new WebSocket('ws://localhost:8000/websockets');
-
-        ws.onmessage = (evt: MessageEvent) => {
-            console.log(evt);
-            // const data: any = JSON.parse(evt.data);
-            // this.setState((prevState: State) => {
-            //     // return {data: prevState.data.concat(data).slice(-hertz * slidingTimeWindowSec * 1000)}
-            // })
-        };
-    });
 
     interface Coingecko_Coins_List {
         id: string,
@@ -40,8 +25,6 @@ function App() {
     const coingeckoUrl = (date: string) => {
         return `https://api.coingecko.com/api/v3/coins/list?include_platform=true`;
     };
-
-
 
     const coingeckoFetch = async (date: string) => {
         fetch(coingeckoUrl(date)).then((response) =>

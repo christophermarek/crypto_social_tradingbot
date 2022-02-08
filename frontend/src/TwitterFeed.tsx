@@ -1,52 +1,62 @@
+import { useEffect, useState } from "react";
+import { socket } from "./socket";
 import { TwitterFeedProps, Twitter_Table_Row } from "./Types/TwitterFeed"
-import { websocketClient } from './websockets/client'
 
 export const TwitterFeed: React.FC<TwitterFeedProps> = ({ feed_to_display }) => {
 
-    //move up and control state with app so I dont keep creating connections every render 
-    // const ws_client = websocketClient();
-    
-    let recieved_messages = [];
-    let ws_connected = false;
-    websocketClient(
-        {
-          onMessage: (message: any) => {
-            console.log(message);
-          },
-          onDisconnect: () => {
-            // ws_connected = false;
-            // convert to state or it wont work
-          },
-        },
-        
-      );
+
+    useEffect(() => {
+        socket.on("twitter", (data) => {
+            setTwitterSocketData((twitteSocketData: TwitterSocketData[]) => [...twitteSocketData, data])
+        });
+    }, []);
+
+    interface TwitterSocketData {
+
+        created_at: string,
+        text: string,
+        id: string,
+        url: string
+    }
+    const [twitteSocketData, setTwitterSocketData] = useState<any>([])
+
 
     return (
         <>
             <p>Hello from Twitter Feed</p>
-            <p>CLick to view TWEET: USE the url format that that twitter url creator site makes with the tweet id.</p>
-
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>coinname</th>
-                        <th>mentions24hrs</th>
-                        <th>hashtags24hrs</th>
-                        <th>sentiment</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {feed_to_display.map((row: Twitter_Table_Row) =>
-                        <tr key={row.coinname}>
-                            <td>{row.coinname}</td>
-                            <td>{row.mentions24hrs}</td>
-                            <td>{row.hashtags24hrs}</td>
-                            <td>{row.sentiment}</td>
+            <div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>coinname</th>
+                            <th>mentions24hrs</th>
+                            <th>hashtags24hrs</th>
+                            <th>sentiment</th>
                         </tr>
-                    )}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {feed_to_display.map((row: Twitter_Table_Row) =>
+                            <tr key={row.coinname}>
+                                <td>{row.coinname}</td>
+                                <td>{row.mentions24hrs}</td>
+                                <td>{row.hashtags24hrs}</td>
+                                <td>{row.sentiment}</td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <p>Realtime Stream from server</p>
+                {twitteSocketData.map((twitter_stream_data: TwitterSocketData) =>
+                    <div>
+                        <p>{twitter_stream_data.text}</p>
+                        <p>{twitter_stream_data.created_at}</p>
+                        <a href={twitter_stream_data.url} target="_blank" rel="noreferrer">View Tweet</a>
+                    </div>
+                )}
+            </div>
+
         </>
     )
 }

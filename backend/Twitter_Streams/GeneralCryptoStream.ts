@@ -25,7 +25,7 @@ export const general_crypto_stream = async (bearer_token) => {
             i = i + 1;
             total_iters = total_iters + 1;
 
-            if(i === sample.length + 1){
+            if(i === sample.length){
                 i = 0;
             }
 
@@ -50,7 +50,7 @@ export const general_crypto_stream = async (bearer_token) => {
 
     // // Add our rules
     // await client.v2.updateStreamRules({
-    //     add: [{ value: 'crypto -is:reply lang:en', tag: 'crypto' }, { value: 'cryptocurrency -is:reply lang:en', tag: 'cryptocurrency' }, { value: '#crypto -is:reply lang:en', tag: '#crypto' }, { value: '#cryptocurrency -is:reply lang:en', tag: '#cryptocurrency' }],
+    //     add: [{ value: 'crypto -is:reply -is:retweet lang:en', tag: 'crypto' }, { value: 'cryptocurrency -is:retweet -is:reply lang:en', tag: 'cryptocurrency' }, { value: '#crypto -is:reply -is:retweet lang:en', tag: '#crypto' }, { value: '#cryptocurrency -is:reply -is:retweet lang:en', tag: '#cryptocurrency' }],
     // });
 
     // const stream = await client.v2.searchStream({

@@ -17,7 +17,7 @@ const port = 8001;
 // type defs i have no idea
 const http = require('http');
 const server = http.createServer(app);
-const io = new Server(server);
+export const io = new Server(server);
 
 
 io.on('connection', (socket) => {
@@ -36,20 +36,20 @@ server.listen(port, () => {
 
     // Bot scheduler, temp placement right now
 
-    // for (let i = 0; i < twitter_streams.length; i++) {
-    //     if (twitter_streams[i].active) {
-    //         switch (twitter_streams[i].name) {
-    //             case 'SchiffStream':
-    //                 console.log('Starting up Schiff Stream');
-    //                 schiff_stream(process.env.TWITTER_BEARER_TOKEN);
-    //                 break;
-    //             case 'GeneralCryptoStream':
-    //                 console.log('Starting up General Crypto Stream');
-    //                 general_crypto_stream(process.env.TWITTER_BEARER_TOKEN);
-    //                 break;
-    //         }
-    //     }
-    // }
+    for (let i = 0; i < twitter_streams.length; i++) {
+        if (twitter_streams[i].active) {
+            switch (twitter_streams[i].name) {
+                case 'SchiffStream':
+                    console.log('Starting up Schiff Stream');
+                    schiff_stream(process.env.TWITTER_BEARER_TOKEN);
+                    break;
+                case 'GeneralCryptoStream':
+                    console.log('Starting up General Crypto Stream');
+                    general_crypto_stream(process.env.TWITTER_BEARER_TOKEN);
+                    break;
+            }
+        }
+    }
 });
 
 require('dotenv').config();

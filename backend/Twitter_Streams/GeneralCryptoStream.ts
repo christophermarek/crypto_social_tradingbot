@@ -8,43 +8,34 @@ export const general_crypto_stream = async (bearer_token) => {
 
     console.log('General Crypto Stream initialized');
 
-    interface TwitterStreamData {
-        data: {
-            author_id: string,
-            created_at: string,
-            id: string,
-            public_metrics: {
-                retweet_count: string,
-                reply_count: string,
-                like_count: string,
-                quote_count: string
-            }
-            text: string,
-            matching_rules: [
-                { id: string, tag: string }
-            ]
-        }
-
-    }
-
-    const { sample: TwitterStreamData } = require('./sample_general_twitterstream');
     
+
+    const { sample } = require('./sample_general_twitterstream');
+
     // these will come in a stream so I need to simulate them being streamed for testing
-    for(let i = 0; i < sample.length; i++){
-        // console.log(sample[i]);
+    // add delay 1ms to simulate stream
 
-        send_over_socket('twitter', sample[i]);
+    function longForLoop(limit) {
+        let i = 0;
+        let total_iters = 0;
+        var ref = setInterval(() => {
 
-        processes_stream_data('twitter', sample[i]);
+            send_over_socket('twitter', sample[i]);
 
-        // add delay 1ms to simulate stream
+            processes_stream_data('twitter', sample[i]);
 
+            i = i + 1;
+            total_iters = total_iters + 1;
 
-        // data processing steps here
+            if(i === sample.length + 1){
+                i = 0;
+            }
 
-        // DO SOCKET FIRST? then i can do the REST, atleast socket will look cool and I can just constantly refresh the same loop just add an artificial
-        // 10ms delay or something like that
+            if (total_iters == limit) clearInterval(ref);
+        }, 1000);
     }
+
+    longForLoop(10000);
 
     // console.log(sample);
     // // Client initialized

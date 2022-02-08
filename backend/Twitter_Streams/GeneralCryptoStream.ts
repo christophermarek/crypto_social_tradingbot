@@ -1,5 +1,7 @@
 
 import TwitterApi, { ETwitterStreamEvent } from 'twitter-api-v2';
+import { processes_stream_data } from '../DataProcessing/data_processor';
+import { send_over_socket } from '../Sockets/socket';
 import { sample } from './sample_general_twitterstream';
 
 export const general_crypto_stream = async (bearer_token) => {
@@ -29,7 +31,14 @@ export const general_crypto_stream = async (bearer_token) => {
     
     // these will come in a stream so I need to simulate them being streamed for testing
     for(let i = 0; i < sample.length; i++){
-        console.log(sample[i]);
+        // console.log(sample[i]);
+
+        send_over_socket('twitter', sample[i]);
+
+        processes_stream_data('twitter', sample[i]);
+
+        // add delay 1ms to simulate stream
+
 
         // data processing steps here
 
@@ -79,5 +88,3 @@ export const general_crypto_stream = async (bearer_token) => {
     // }
 
 }
-
-general_crypto_stream('asadsa')

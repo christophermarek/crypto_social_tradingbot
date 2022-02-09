@@ -62,21 +62,29 @@ export const processes_stream_data = (datasource_type: string, data: TwitterStre
     // dont need an else we just skip
     if (!(keywords.size === 0)) {
 
-        console.log(keywords);
-
+        // https://naturalnode.github.io/natural/sentiment_analysis.html
         var Analyzer = require('natural').SentimentAnalyzer;
         // Vocabulary: sets the type of vocabulary, "afinn", "senticon" or "pattern" are valid values.
         // probably should test all of these? im not sure what is the best for the task to be honest
         var analyzer = new Analyzer("English", null, "afinn");
-        console.log(analyzer.getSentiment(["I", "like", "cherries"]));
+        const sentiment = analyzer.getSentiment(tokenized);
+
+        const processed_data = {
+            datasource: datasource_type,
+            tweet_id: data_obj.id,
+            author_id: data_obj.author_id,
+            post_date: data_obj.created_at,
+            sentiment: sentiment,
+            engagement: metrics,
+            keyword_map: keywords
+        }
+        // console.log(processed_data)
+        // POST TO DB
+        
+
+        // DONE PROCESSING
 
 
-        // WHAT DO WE WANT TO POST TO DB?
-        // TWEET ID TO RETRIEVE LATER
-        // AUTHOR ID
-        // METRICS
-        // KEYWORD COUNT
-        // SENTIMENT measure at the end since most of the tweets are garbage.
     }
 }
 

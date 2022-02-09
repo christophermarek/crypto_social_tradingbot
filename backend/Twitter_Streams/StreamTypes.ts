@@ -4,10 +4,10 @@ export interface TwitterStreamData {
         created_at: string,
         id: string,
         public_metrics: {
-            retweet_count: string,
-            reply_count: string,
-            like_count: string,
-            quote_count: string
+            retweet_count: any,
+            reply_count: any,
+            like_count: any,
+            quote_count: any
         }
         text: string,
         matching_rules?: [

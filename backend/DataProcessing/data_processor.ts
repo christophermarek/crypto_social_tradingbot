@@ -1,5 +1,6 @@
 import { sample } from "../Twitter_Streams/sample_general_twitterstream";
 import { TwitterStreamData } from "../Twitter_Streams/StreamTypes";
+import { TwitterStream } from "./twitter_stream_backend";
 
 
 const key_words = [
@@ -80,6 +81,14 @@ export const processes_stream_data = (datasource_type: string, data: TwitterStre
         }
         // console.log(processed_data)
         // POST TO DB
+        TwitterStream.create(processed_data, function (err, entry) {
+            if (err) {
+                console.log(err)
+            } else {
+                // probably want to update this to be more specific
+                console.log(`Tweet from general ${datasource_type} crytpo stream successfully pushed to db`);
+            }
+        });
         
 
         // DONE PROCESSING

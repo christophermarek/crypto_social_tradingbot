@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios"
 import { APIAllBotInfo, APISchiffTweets } from "./Types/API"
 
-let baseUrl: string = "http://localhost:8000"
+let baseUrl: string = "http://localhost:8001"
 // const isProduction = process.env.REACT_APP_PRODUCTION;
 // if(isProduction === "TRUE"){
 //     baseUrl = "https://stock-news-analyze.herokuapp.com"

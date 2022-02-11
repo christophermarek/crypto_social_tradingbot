@@ -1,7 +1,7 @@
 
 Project Proposal:
 
-Momentum trading bot:
+**Momentum trading bot**:
 - Utilize the social media data
 - Price data
 - and volume data

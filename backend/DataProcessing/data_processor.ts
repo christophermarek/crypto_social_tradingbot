@@ -69,12 +69,13 @@ export const processes_stream_data = (datasource_type: string, data: TwitterStre
         // probably should test all of these? im not sure what is the best for the task to be honest
         var analyzer = new Analyzer("English", null, "afinn");
         const sentiment = analyzer.getSentiment(tokenized);
+        const date = new Date(data_obj.created_at)
 
         const processed_data = {
             datasource: datasource_type,
             tweet_id: data_obj.id,
             author_id: data_obj.author_id,
-            post_date: data_obj.created_at,
+            post_date: date,
             sentiment: sentiment,
             engagement: metrics,
             keyword_map: keywords
@@ -89,14 +90,13 @@ export const processes_stream_data = (datasource_type: string, data: TwitterStre
                 console.log(`Tweet from general ${datasource_type} crytpo stream successfully pushed to db`);
             }
         });
-        
 
         // DONE PROCESSING
-
 
     }
 }
 
-for (let i = 0; i < sample.length; i++) {
-    processes_stream_data('twitter', sample[i]);
-}
+
+// for(let i = 0; i < sample.length; i++){
+//     processes_stream_data('twitter', sample[i])
+// }

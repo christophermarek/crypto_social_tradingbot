@@ -20,7 +20,7 @@ export const general_crypto_stream = async (bearer_token) => {
 
             send_over_socket('twitter', sample[i]);
 
-            processes_stream_data('twitter', sample[i]);
+            // processes_stream_data('twitter', sample[i]);
 
             i = i + 1;
             total_iters = total_iters + 1;

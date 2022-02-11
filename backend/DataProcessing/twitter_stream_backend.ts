@@ -21,7 +21,7 @@ const TwitterStreamSchema: Schema = new Schema(
         datasource: { type: String },
         tweet_id: { type: String },
         author_id: { type: String },
-        post_date: { type: String },
+        post_date: { type: Date },
         sentiment: { type: Number },
         engagement: {
             retweet_count: { type: Number },
@@ -44,3 +44,15 @@ export const getAllTwitterStream = async (req: Request, res: Response): Promise<
     }
 }
 
+export const getTwitterCoinDataByTimeFrame = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const coin_name = req.params.coin_name;
+        const timeframe = req.params.timeframe;
+        
+        // ok now run query
+
+        res.status(200).json( req.params );
+    } catch (error) {
+        res.status(400).json({ error: error });
+    }
+}

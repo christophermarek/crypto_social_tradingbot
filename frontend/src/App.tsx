@@ -68,8 +68,10 @@ function App() {
     return (
         <div className="App">
 
-            <input type='button' value='view bots' onClick={() => setPageSelected('bots')} />
-            <input type='button' value='view feed' onClick={() => setPageSelected('feed')} />
+            <div className='navBar'>
+                <input type='button' className='navBtn' value='BOTS' onClick={() => setPageSelected('bots')} />
+                <input type='button' className='navBtn' value='DATA' onClick={() => setPageSelected('feed')} />
+            </div>
 
             {pageSelected === 'feed' &&
                 <TwitterFeed feed_to_display={twitter_feed.feed_to_display} />

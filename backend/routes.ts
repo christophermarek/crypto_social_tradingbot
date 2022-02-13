@@ -16,8 +16,8 @@ router.get('/twitter_streams/schiff', getAllSchiffTweets)
 
 router.get('/twitter_streams/generalcryptostream/all', getAllTwitterStream)
 
-router.get('/twitter_streams/generalcryptostream/:coin_name/:timeframe', getTwitterCoinDataByTimeFrameAndName)
 router.get('/twitter_streams/generalcryptostream/:timeframe', getTwitterCoinDataByTimeFrame)
+router.get('/twitter_streams/generalcryptostream/:coin_name/:timeframe', getTwitterCoinDataByTimeFrameAndName)
 
 
 export default router;

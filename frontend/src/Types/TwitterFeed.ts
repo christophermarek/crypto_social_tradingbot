@@ -1,3 +1,4 @@
+import { TwiitterStreamType } from "./API";
 
 export interface Twitter_Table_Row{
     coinname: string,
@@ -8,6 +9,7 @@ export interface Twitter_Table_Row{
 
 export interface TwitterFeedProps {
     
-    feed_to_display: Twitter_Table_Row[]
+    twitter_24_hours: TwiitterStreamType[]
+    twitter_one_week: TwiitterStreamType[]
 
 }

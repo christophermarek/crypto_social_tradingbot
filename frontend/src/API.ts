@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios"
-import { APIAllBotInfo, APISchiffTweets } from "./Types/API"
+import { APIAllBotInfo, APISchiffTweets, TwiitterStreamType } from "./Types/API"
 
 let baseUrl: string = "http://localhost:8001"
 // const isProduction = process.env.REACT_APP_PRODUCTION;
@@ -24,6 +24,33 @@ export const getAllBotInfo = async (): Promise<AxiosResponse<APIAllBotInfo[]>> =
             baseUrl + "/bots/all/info"
         )
         return all_bot_info
+    }catch (error: any){
+        throw new Error(error)
+    }
+}
+
+// server casts timeframe to int
+// timeframe is in hours, it fetches tweets from current time to current time - timeframe
+export const getTwitterCoinDataByTimeFrame = async (timeframe: number): Promise<AxiosResponse<TwiitterStreamType[]>> => {
+    try{
+        const twitter_stream_data: AxiosResponse<TwiitterStreamType[]> = await axios.get(
+            baseUrl + `/twitter_streams/generalcryptostream/${timeframe}`
+        )
+        return twitter_stream_data
+    }catch (error: any){
+        throw new Error(error)
+    }
+}
+
+// coinname is by ticker
+// server casts timeframe to int
+// timeframe is in hours, it fetches tweets from current time to current time - timeframe
+export const getTwitterCoinDataByTimeFrameAndName = async (coin_name: string, timeframe: number): Promise<AxiosResponse<TwiitterStreamType[]>> => {
+    try{
+        const twitter_stream_data: AxiosResponse<TwiitterStreamType[]> = await axios.get(
+            baseUrl + `/twitter_streams/generalcryptostream/${coin_name}/${timeframe}`
+        )
+        return twitter_stream_data
     }catch (error: any){
         throw new Error(error)
     }

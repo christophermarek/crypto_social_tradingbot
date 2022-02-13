@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { socket } from "./socket";
 import { TwitterFeedProps, Twitter_Table_Row } from "./Types/TwitterFeed"
 
-export const TwitterFeed: React.FC<TwitterFeedProps> = ({ feed_to_display }) => {
+export const TwitterFeed: React.FC<TwitterFeedProps> = ({ twitter_24_hours, twitter_one_week }) => {
 
 
     useEffect(() => {
@@ -36,14 +36,14 @@ export const TwitterFeed: React.FC<TwitterFeedProps> = ({ feed_to_display }) => 
                             </tr>
                         </thead>
                         <tbody>
-                            {feed_to_display.map((row: Twitter_Table_Row) =>
+                            {/* {feed_to_display.map((row: Twitter_Table_Row) =>
                                 <tr key={row.coinname}>
                                     <td>{row.coinname}</td>
                                     <td>{row.mentions24hrs}</td>
                                     <td>{row.hashtags24hrs}</td>
                                     <td>{row.sentiment}</td>
                                 </tr>
-                            )}
+                            )} */}
                         </tbody>
                     </table>
                 </div>

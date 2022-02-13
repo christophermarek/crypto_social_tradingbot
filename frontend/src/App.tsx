@@ -3,8 +3,8 @@ import './App.css';
 import { Bots } from './Bots';
 import { TwitterFeed } from './TwitterFeed';
 import { TwitterFeedProps, Twitter_Table_Row } from './Types/TwitterFeed';
-import { getAllBotInfo, getSchiffTweets } from './API'
-import { APIAllBotInfo, APISchiffTweets } from './Types/API';
+import { getAllBotInfo, getSchiffTweets, getTwitterCoinDataByTimeFrame } from './API'
+import { APIAllBotInfo, APISchiffTweets, TwiitterStreamType } from './Types/API';
 
 function App() {
 
@@ -17,10 +17,27 @@ function App() {
         }
     }
 
+    useEffect(() => {
+
+        async function loadDataFromServer(){
+            // CHANGE THIS To 24 hours once real time stream is up
+            let data24hr = (await getTwitterCoinDataByTimeFrame(30)).data;
+            let data1week = (await getTwitterCoinDataByTimeFrame(168)).data;
+    
+            setTwitterData24Hours(data24hr)
+            setTwitterDataOneWeek(data1week);
+        }
+
+        loadDataFromServer()
+        
+    }, []);
+
     const [pageSelected, setPageSelected] = useState<string>('bots')
     const [coinsList, setCoinsList] = useState<Coingecko_Coins_List | undefined>(undefined);
     const [schiffTweets, setSchiffTweets] = useState<APISchiffTweets[] | undefined>(undefined);
     const [allBotInfo, setAllBotInfo] = useState<APIAllBotInfo[] | undefined>(undefined);
+    const [twitterData24Hours, setTwitterData24Hours] = useState<TwiitterStreamType[] | undefined>(undefined)
+    const [twitterDataOneWeek, setTwitterDataOneWeek] = useState<TwiitterStreamType[] | undefined>(undefined)
 
     const coingeckoUrl = (date: string) => {
         return `https://api.coingecko.com/api/v3/coins/list?include_platform=true`;
@@ -55,16 +72,6 @@ function App() {
 
     loadAPIData()
 
-    const twitter_feed: TwitterFeedProps = {
-        feed_to_display: [
-            { coinname: 'BTC', mentions24hrs: '1000', hashtags24hrs: '1000', sentiment: '100' },
-            { coinname: 'ETH', mentions24hrs: '3121', hashtags24hrs: '3928', sentiment: '1200' },
-            { coinname: 'ADA', mentions24hrs: '11', hashtags24hrs: '3928', sentiment: '-3000' },
-            { coinname: 'FTX', mentions24hrs: '221321', hashtags24hrs: '324214', sentiment: '300' },
-            { coinname: 'SOL', mentions24hrs: '22341', hashtags24hrs: '213213', sentiment: '450' },
-        ]
-    }
-
     return (
         <div className="App">
 
@@ -73,8 +80,8 @@ function App() {
                 <input type='button' className='navBtn' value='DATA' onClick={() => setPageSelected('feed')} />
             </div>
 
-            {pageSelected === 'feed' &&
-                <TwitterFeed feed_to_display={twitter_feed.feed_to_display} />
+            {pageSelected === 'feed' && twitterData24Hours !== undefined && twitterDataOneWeek &&
+                <TwitterFeed twitter_24_hours={twitterData24Hours} twitter_one_week={twitterDataOneWeek}/>
             }
 
             {pageSelected === 'bots' &&

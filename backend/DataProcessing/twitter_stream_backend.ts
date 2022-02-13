@@ -49,9 +49,16 @@ export const getTwitterCoinDataByTimeFrame = async (req: Request, res: Response)
         const coin_name = req.params.coin_name;
         const timeframe = req.params.timeframe;
         
+        // const map_query:String = 
         // ok now run query
+        const query_result: TwiitterStreamType[] = await TwitterStream.find({
+            [`keyword_map.${coin_name}`]:{
+                "$exists": true
+            }
+        },
+        ).exec()
 
-        res.status(200).json( req.params );
+        res.status(200).json( query_result );
     } catch (error) {
         res.status(400).json({ error: error });
     }

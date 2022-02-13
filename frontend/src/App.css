@@ -26,3 +26,8 @@
 .navBtn:hover{
     color: grey;
 }
+
+#twitterPage{
+    display: flex;
+    flex-direction: column;
+}

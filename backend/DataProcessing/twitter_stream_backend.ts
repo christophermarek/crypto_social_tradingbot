@@ -44,21 +44,57 @@ export const getAllTwitterStream = async (req: Request, res: Response): Promise<
     }
 }
 
-export const getTwitterCoinDataByTimeFrame = async (req: Request, res: Response): Promise<void> => {
+// FINDS entries in db with keyword maps for the coin_name, and with date between now and now - hours passed in params
+export const getTwitterCoinDataByTimeFrameAndName = async (req: Request, res: Response): Promise<void> => {
     try {
         const coin_name = req.params.coin_name;
-        const timeframe = req.params.timeframe;
-        
-        // const map_query:String = 
+        const timeframe = parseInt(req.params.timeframe);
+        let curr_date = new Date();
+        let prev_date = new Date();
+        prev_date.setHours(prev_date.getHours() - timeframe); 
+
         // ok now run query
-        const query_result: TwiitterStreamType[] = await TwitterStream.find({
-            [`keyword_map.${coin_name}`]:{
-                "$exists": true
+        const query_result: TwiitterStreamType[] = await TwitterStream.find(
+            {
+                [`keyword_map.${coin_name}`]: {
+                    "$exists": true
+                }
+            },
+            {
+                post_date: 
+                {
+                    $gte: prev_date, 
+                    $lte: curr_date
+                }
             }
-        },
         ).exec()
 
-        res.status(200).json( query_result );
+        res.status(200).json(query_result);
+    } catch (error) {
+        res.status(400).json({ error: error });
+    }
+}
+
+// FINDS entries in db with date between now and now - hours passed in params
+export const getTwitterCoinDataByTimeFrame = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const timeframe = parseInt(req.params.timeframe);
+        let curr_date = new Date();
+        let prev_date = new Date();
+        prev_date.setHours(prev_date.getHours() - timeframe); 
+
+        // ok now run query
+        const query_result: TwiitterStreamType[] = await TwitterStream.find(
+            {
+                post_date: 
+                {
+                    $gte: prev_date, 
+                    $lte: curr_date
+                }
+            }
+        ).exec()
+
+        res.status(200).json(query_result);
     } catch (error) {
         res.status(400).json({ error: error });
     }

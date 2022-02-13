@@ -1,6 +1,6 @@
 import { Router } from "express"
 import { twitter_streams } from "./app"
-import { getAllTwitterStream, getTwitterCoinDataByTimeFrame } from "./DataProcessing/twitter_stream_backend"
+import { getAllTwitterStream, getTwitterCoinDataByTimeFrame, getTwitterCoinDataByTimeFrameAndName } from "./DataProcessing/twitter_stream_backend"
 import { getAllSchiffTweets } from "./Twitter_Streams/SchiffStreamBackend"
 
 const router: Router = Router()
@@ -16,7 +16,8 @@ router.get('/twitter_streams/schiff', getAllSchiffTweets)
 
 router.get('/twitter_streams/generalcryptostream/all', getAllTwitterStream)
 
-router.get('/twitter_streams/generalcryptostream/:coin_name/:timeframe', getTwitterCoinDataByTimeFrame)
+router.get('/twitter_streams/generalcryptostream/:coin_name/:timeframe', getTwitterCoinDataByTimeFrameAndName)
+router.get('/twitter_streams/generalcryptostream/:timeframe', getTwitterCoinDataByTimeFrame)
 
 
 export default router;

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { CartesianGrid, ResponsiveContainer, Scatter, ScatterChart, Tooltip, XAxis, YAxis } from "recharts";
+import { getTwitterCoinDataByTimeFrameAndName } from "./API";
 import { socket } from "./socket";
 import { TwiitterStreamType } from "./Types/API";
 import { TwitterFeedProps, Twitter_Table_Row } from "./Types/TwitterFeed"
@@ -55,37 +56,114 @@ export const TwitterFeed: React.FC<TwitterFeedProps> = ({ twitter_24_hours, twit
         )
     }
 
+    // PROBLEMS HERE, COINGECKO API uses coinname as the coins name, but my server api uses coinname as the ticker. This is a problem!
+    // How to solve?
+
     // https://recharts.org/en-US/examples/SimpleScatterChart
-    const renderPriceVsMentionsChartForCoin = (coin_name: string, tableData: TwiitterStreamType[]) => {
+    // coinname (not ticker)) eg bitcoin, ethereum
+    // timeframe in hours
+    const RenderPriceVsMentionsChartForCoin = (coin_name: string, coin_full_name: string, time_frame: number, tableData: TwiitterStreamType[]) => {
+
+        interface coinsMarketDataHistorical {
+            market_caps: []
+            prices: []
+            total_volumes: []
+        }
+
+        // FROM API
+        // Minutely data will be used for duration within 1 day,
+        //  Hourly data will be used for duration between 1 day and 90 days, 
+        //  Daily data will be used for duration above 90 days.
+        // fetch prices with dates/times
+        const coingeckoUrl = () => {
+            // convert hours param to days
+            const num_days = time_frame / 24
+            return `https://api.coingecko.com/api/v3/coins/${coin_full_name}/market_chart?vs_currency=usd&days=${num_days}`;
+        };
+
+
+        useEffect(() => {
+
+            const coingeckoFetch = async () => {
+                fetch(coingeckoUrl()).then((response) =>
+                    response.json().then((jsonData) => {
+                        setCoingeckoChartData(jsonData)
+                        return jsonData
+                    })
+                );
+            };
+
+            const fetchFromServerApi = async() => {
+                let data = (await getTwitterCoinDataByTimeFrameAndName(coin_name, 168)).data
+                setServerDataForCoinByTimeFrame(data);
+            }
+
+            fetchFromServerApi()
+            coingeckoFetch()
+
+        }, []);
+
+
+        const [coingeckoChartData, setCoingeckoChartData] = useState<coinsMarketDataHistorical | undefined>(undefined)
+        const [serverDataForCoinByTimeFrame, setServerDataForCoinByTimeFrame] = useState<TwiitterStreamType[] | undefined>(undefined)
+
 
         const data = [
-            { x: 100, y: 200, z: 200 },
-            { x: 120, y: 100, z: 260 },
-            { x: 170, y: 300, z: 400 },
-            { x: 140, y: 250, z: 280 },
-            { x: 150, y: 400, z: 500 },
-            { x: 110, y: 280, z: 200 },
+            { x: 100, y: 200 },
+            { x: 120, y: 100 },
+            { x: 170, y: 300 },
+            { x: 140, y: 250 },
+            { x: 150, y: 400 },
+            { x: 110, y: 280 },
         ];
 
+        // now coingecko data fetched
+
+        // now need my own data call my own api to getTwitterCoinDataByTimeFrameAndName
+
+        
+
+        //aggregate data for this
+        // we want prices per date
+        // guess we do the same when fetching, from now until now - timespan (need this as an arg to pass)
+        // and mentions per date, we find this when iterating over table data
+        // then combine the two to create the x/y
+        if(coingeckoChartData !== undefined && serverDataForCoinByTimeFrame !== undefined){
+            
+            // update state when complete
+        }
+
+
         return (
-            <ResponsiveContainer width="100%" height="100%">
-                <ScatterChart
-                    width={400}
-                    height={400}
-                    margin={{
-                        top: 20,
-                        right: 20,
-                        bottom: 20,
-                        left: 20,
-                    }}
-                >
-                    <CartesianGrid />
-                    <XAxis type="number" dataKey="x" name="stature" unit="cm" />
-                    <YAxis type="number" dataKey="y" name="weight" unit="kg" />
-                    <Tooltip cursor={{ strokeDasharray: '3 3' }} />
-                    <Scatter name="A school" data={data} fill="#8884d8" />
-                </ScatterChart>
-            </ResponsiveContainer>
+
+            coingeckoChartData === undefined ?
+
+                (
+                    <p>Data not loaded yet from coingecko</p>
+                )
+                :
+                (
+                    <>
+                        <ScatterChart
+                            width={400}
+                            height={400}
+                            margin={{
+                                top: 20,
+                                right: 20,
+                                bottom: 20,
+                                left: 20,
+                            }}
+                        >
+                            <CartesianGrid />
+                            <XAxis type="number" dataKey="x" name="mentions" unit="cm" />
+                            <YAxis type="number" dataKey="y" name="price" unit="kg" />
+                            <Tooltip cursor={{ strokeDasharray: '1 1' }} animationDuration={0} />
+                            <Scatter name="Price vs Mentions" data={data} fill="#8884d8" />
+                        </ScatterChart >
+                        )
+                    </>
+
+                )
         )
     }
 
@@ -121,8 +199,8 @@ export const TwitterFeed: React.FC<TwitterFeedProps> = ({ twitter_24_hours, twit
                 </div>
                 <div id={'chartsPage'}>
                     <p>Charts Page</p>
-                    <p>Mentions vs Price vs Eth past 7 days</p>
-                    {renderPriceVsMentionsChartForCoin('eth', twitter_one_week)}
+                    <p>Mentions vs Price for Eth past 7 days</p>
+                    {RenderPriceVsMentionsChartForCoin('eth', 'ethereum', 168, twitter_one_week)}
                 </div>
             </div>
         </>

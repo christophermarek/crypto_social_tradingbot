@@ -68,10 +68,11 @@ export const getTwitterCoinDataByTimeFrameAndName = async (req: Request, res: Re
                 }
             }
         ).exec()
-
         res.status(200).json(query_result);
     } catch (error) {
-        res.status(400).json({ error: error });
+        // WHAT IS THE ERROR WHY IS THIS NOT WORKING? IT WORKED BEFORE
+        // is it because the query with coinname is not escaped properly?
+        res.status(400).json({ error });
     }
 }
 

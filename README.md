@@ -27,6 +27,9 @@ For trading bot:
 
 ## PROJECT PAIN POINTS currently:
 
+NEED a valid phone number for twitter API?
+And their frontend API is a mess and not paginated for results, this might be tougher than I thought.
+
 Twitter data streams:
 1. Streams expire after 19 days I think, so cant keep them open forevery (easy solution I just need a way to check)
 2. 500,000 tweets allowed to stream a month. The problem is I cannot check how many I have reached other than on the twitter dashboard. Or if API req fails

@@ -32,7 +32,7 @@ function App() {
         
     }, []);
 
-    const [pageSelected, setPageSelected] = useState<string>('bots')
+    const [pageSelected, setPageSelected] = useState<string>('feed')
     const [coinsList, setCoinsList] = useState<Coingecko_Coins_List | undefined>(undefined);
     const [schiffTweets, setSchiffTweets] = useState<APISchiffTweets[] | undefined>(undefined);
     const [allBotInfo, setAllBotInfo] = useState<APIAllBotInfo[] | undefined>(undefined);

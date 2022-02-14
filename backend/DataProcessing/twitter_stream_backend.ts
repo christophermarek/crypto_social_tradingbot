@@ -51,28 +51,31 @@ export const getTwitterCoinDataByTimeFrameAndName = async (req: Request, res: Re
         const timeframe = parseInt(req.params.timeframe);
         let curr_date = new Date();
         let prev_date = new Date();
-        prev_date.setHours(prev_date.getHours() - timeframe); 
+        prev_date.setHours(prev_date.getHours() - timeframe);
 
         // ok now run query
         const query_result: TwiitterStreamType[] = await TwitterStream.find(
             {
+                post_date:
+                {
+                    $gte: prev_date,
+                    $lte: curr_date
+                }
+                ,
+
                 [`keyword_map.${coin_name}`]: {
                     "$exists": true
                 }
-            },
-            {
-                post_date: 
-                {
-                    $gte: prev_date, 
-                    $lte: curr_date
-                }
             }
+
         ).exec()
+
         res.status(200).json(query_result);
     } catch (error) {
         // WHAT IS THE ERROR WHY IS THIS NOT WORKING? IT WORKED BEFORE
         // is it because the query with coinname is not escaped properly?
-        res.status(400).json({ error });
+        console.log(error)
+        res.status(400).json(error);
     }
 }
 
@@ -82,14 +85,14 @@ export const getTwitterCoinDataByTimeFrame = async (req: Request, res: Response)
         const timeframe = parseInt(req.params.timeframe);
         let curr_date = new Date();
         let prev_date = new Date();
-        prev_date.setHours(prev_date.getHours() - timeframe); 
+        prev_date.setHours(prev_date.getHours() - timeframe);
 
         // ok now run query
         const query_result: TwiitterStreamType[] = await TwitterStream.find(
             {
-                post_date: 
+                post_date:
                 {
-                    $gte: prev_date, 
+                    $gte: prev_date,
                     $lte: curr_date
                 }
             }

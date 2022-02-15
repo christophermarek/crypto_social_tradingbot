@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CartesianGrid, ResponsiveContainer, Scatter, ScatterChart, Tooltip, XAxis, YAxis } from "recharts";
+import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Scatter, ScatterChart, Tooltip, XAxis, YAxis } from "recharts";
 import { getTwitterCoinDataByTimeFrameAndName } from "./API";
 import { socket } from "./socket";
 import { TwiitterStreamType } from "./Types/API";
@@ -93,7 +93,7 @@ export const TwitterFeed: React.FC<TwitterFeedProps> = ({ twitter_24_hours, twit
                 );
             };
 
-            const fetchFromServerApi = async() => {
+            const fetchFromServerApi = async () => {
                 let data = (await getTwitterCoinDataByTimeFrameAndName(coin_name, time_frame)).data
                 setServerDataForCoinByTimeFrame(data);
             }
@@ -105,7 +105,8 @@ export const TwitterFeed: React.FC<TwitterFeedProps> = ({ twitter_24_hours, twit
 
 
         const [coingeckoChartData, setCoingeckoChartData] = useState<coinsMarketDataHistorical | undefined>(undefined)
-        const [serverDataForCoinByTimeFrame, setServerDataForCoinByTimeFrame] = useState<TwiitterStreamType[] | undefined>(undefined)
+        // the map is converted to an object when fetched by the api, this is a problem because i want to keep the type definition!
+        const [serverDataForCoinByTimeFrame, setServerDataForCoinByTimeFrame] = useState<any[] | undefined>(undefined)
 
 
         const data = [
@@ -122,9 +123,9 @@ export const TwitterFeed: React.FC<TwitterFeedProps> = ({ twitter_24_hours, twit
         // now need my own data call my own api to getTwitterCoinDataByTimeFrameAndName
 
         interface plot_data_row {
-            x: string, y: Number, z: Number
-        } 
-        
+            x: string, y: number, z: number, ref_date: Date
+        }
+
         let plot_data: Array<plot_data_row> = []
 
         //aggregate data for this
@@ -132,52 +133,83 @@ export const TwitterFeed: React.FC<TwitterFeedProps> = ({ twitter_24_hours, twit
         // guess we do the same when fetching, from now until now - timespan (need this as an arg to pass)
         // and mentions per date, we find this when iterating over table data
         // then combine the two to create the x/y
-        if(coingeckoChartData !== undefined && serverDataForCoinByTimeFrame !== undefined){
+        if (coingeckoChartData !== undefined && serverDataForCoinByTimeFrame !== undefined) {
 
             // hourly data from coingecko price feed.
-            for(let i = 0; i < coingeckoChartData.prices.length; i++){
-                let coin_time_at_price = new Date(coingeckoChartData.prices[i][0]).toUTCString();
+            for (let i = 0; i < coingeckoChartData.prices.length; i++) {
+                let date = new Date(coingeckoChartData.prices[i][0]);
+                let coin_time_at_price = date.toUTCString();
                 let coin_price_at_time = coingeckoChartData.prices[i][1];
-                
-                plot_data[i] = {x: coin_time_at_price, y: coin_price_at_time, z: 0}
+
+                plot_data[i] = { x: coin_time_at_price, y: coin_price_at_time, z: 0, ref_date: date }
 
             }
 
             // And mentions might only be seconds apart. So 
+            for(let n = 0; n < serverDataForCoinByTimeFrame.length; n++){
+                let date = new Date(serverDataForCoinByTimeFrame[n].post_date);
+                // find entry for this hour in price list
+                for(let m = 0; m < plot_data.length; m++){
+                    if(plot_data[m].ref_date.getUTCMonth() === date.getUTCMonth() && plot_data[m].ref_date.getUTCDay() === date.getUTCDay() && plot_data[m].ref_date.getUTCHours() === date.getUTCHours() ){
+                        let mentions = serverDataForCoinByTimeFrame[n].keyword_map[`${coin_name}`]
+                        // match found, now append mentions
+                        if(mentions !== undefined){
+                            plot_data[m].z = plot_data[m].z + mentions
+                        }
+                    }
+                }
+            }
+
             
-            // update state when complete
-            // console.log(plot_data)
         }
 
 
         return (
 
-            coingeckoChartData === undefined || plot_data.length === 0 ? 
+            coingeckoChartData === undefined || plot_data.length === 0 ?
 
                 (
                     <p>Data not loaded yet from coingecko</p>
                 )
                 :
                 (
-                    <>
-                        <ScatterChart
-                            width={1000}
-                            height={500}
-                            margin={{
-                                top: 0,
-                                right: 10,
-                                bottom: 0,
-                                left: 20,
-                            }}
+                    <LineChart
+                        width={1000}
+                        height={500}
+                        data={plot_data}
+                        margin={{
+                            top: 5,
+                            right: 30,
+                            left: 20,
+                            bottom: 5,
+                        }}
                         >
-                            <CartesianGrid />
-                            <XAxis dataKey="x" name="Date" unit="DD/MM/YY" />
-                            <YAxis type="number" dataKey="y" name="price" unit="USD" />
-                            <Tooltip cursor={{ strokeDasharray: '1 1' }} animationDuration={0} />
-                            <Scatter name="Price vs Mentions" data={plot_data} fill="#8884d8" />
-                        </ScatterChart >
-                        )
-                    </>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="x" />
+                        <YAxis yAxisId="left" />
+                        <YAxis yAxisId="right" orientation="right"/>
+
+                        <Tooltip cursor={{ strokeDasharray: '1 1' }} animationDuration={0} />
+                        <Line yAxisId="left" type="monotone" dataKey="y" stroke="#8884d8" activeDot={{ r: 8 }} />
+                        <Line yAxisId="right" type="monotone" dataKey="z" stroke="#82ca9d" />
+                        </LineChart>
+
+                    // <ScatterChart
+                    //     width={1000}
+                    //     height={500}
+                    //     margin={{
+                    //         top: 0,
+                    //         right: 10,
+                    //         bottom: 0,
+                    //         left: 20,
+                    //     }}
+                    // >
+                    //     <CartesianGrid />
+                    //     <XAxis dataKey="x" name="Date" unit="DD/MM/YY" />
+                    //     <YAxis type="number" dataKey="y" name="price" unit="USD" />
+                    //     <Tooltip cursor={{ strokeDasharray: '1 1' }} animationDuration={0} />
+                    //     <Scatter name="Price vs Mentions" data={plot_data} fill="#8884d8" />
+                    // </ScatterChart >
 
                 )
         )

@@ -65,9 +65,9 @@ export const TwitterFeed: React.FC<TwitterFeedProps> = ({ twitter_24_hours, twit
     const RenderPriceVsMentionsChartForCoin = (coin_name: string, coin_full_name: string, time_frame: number, tableData: TwiitterStreamType[]) => {
 
         interface coinsMarketDataHistorical {
-            market_caps: []
-            prices: []
-            total_volumes: []
+            market_caps: any
+            prices: any
+            total_volumes: any
         }
 
         // FROM API
@@ -94,7 +94,7 @@ export const TwitterFeed: React.FC<TwitterFeedProps> = ({ twitter_24_hours, twit
             };
 
             const fetchFromServerApi = async() => {
-                let data = (await getTwitterCoinDataByTimeFrameAndName(coin_name, 168)).data
+                let data = (await getTwitterCoinDataByTimeFrameAndName(coin_name, time_frame)).data
                 setServerDataForCoinByTimeFrame(data);
             }
 
@@ -121,7 +121,11 @@ export const TwitterFeed: React.FC<TwitterFeedProps> = ({ twitter_24_hours, twit
 
         // now need my own data call my own api to getTwitterCoinDataByTimeFrameAndName
 
+        interface plot_data_row {
+            x: string, y: Number, z: Number
+        } 
         
+        let plot_data: Array<plot_data_row> = []
 
         //aggregate data for this
         // we want prices per date
@@ -129,14 +133,26 @@ export const TwitterFeed: React.FC<TwitterFeedProps> = ({ twitter_24_hours, twit
         // and mentions per date, we find this when iterating over table data
         // then combine the two to create the x/y
         if(coingeckoChartData !== undefined && serverDataForCoinByTimeFrame !== undefined){
+
+            // hourly data from coingecko price feed.
+            for(let i = 0; i < coingeckoChartData.prices.length; i++){
+                let coin_time_at_price = new Date(coingeckoChartData.prices[i][0]).toUTCString();
+                let coin_price_at_time = coingeckoChartData.prices[i][1];
+                
+                plot_data[i] = {x: coin_time_at_price, y: coin_price_at_time, z: 0}
+
+            }
+
+            // And mentions might only be seconds apart. So 
             
             // update state when complete
+            // console.log(plot_data)
         }
 
 
         return (
 
-            coingeckoChartData === undefined ?
+            coingeckoChartData === undefined || plot_data.length === 0 ? 
 
                 (
                     <p>Data not loaded yet from coingecko</p>
@@ -145,20 +161,20 @@ export const TwitterFeed: React.FC<TwitterFeedProps> = ({ twitter_24_hours, twit
                 (
                     <>
                         <ScatterChart
-                            width={400}
-                            height={400}
+                            width={1000}
+                            height={500}
                             margin={{
-                                top: 20,
-                                right: 20,
-                                bottom: 20,
+                                top: 0,
+                                right: 10,
+                                bottom: 0,
                                 left: 20,
                             }}
                         >
                             <CartesianGrid />
-                            <XAxis type="number" dataKey="x" name="mentions" unit="cm" />
-                            <YAxis type="number" dataKey="y" name="price" unit="kg" />
+                            <XAxis dataKey="x" name="Date" unit="DD/MM/YY" />
+                            <YAxis type="number" dataKey="y" name="price" unit="USD" />
                             <Tooltip cursor={{ strokeDasharray: '1 1' }} animationDuration={0} />
-                            <Scatter name="Price vs Mentions" data={data} fill="#8884d8" />
+                            <Scatter name="Price vs Mentions" data={plot_data} fill="#8884d8" />
                         </ScatterChart >
                         )
                     </>
@@ -200,7 +216,7 @@ export const TwitterFeed: React.FC<TwitterFeedProps> = ({ twitter_24_hours, twit
                 <div id={'chartsPage'}>
                     <p>Charts Page</p>
                     <p>Mentions vs Price for Eth past 7 days</p>
-                    {RenderPriceVsMentionsChartForCoin('eth', 'ethereum', 168, twitter_one_week)}
+                    {RenderPriceVsMentionsChartForCoin('eth', 'ethereum', 300, twitter_one_week)}
                 </div>
             </div>
         </>

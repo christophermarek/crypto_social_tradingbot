@@ -8,7 +8,8 @@
     "server": "nodemon app.ts",
     "bot": "cd KucoinBot && nodemon tradingbot_kucoin.ts",
     "test_stream": "cd Twitter_Streams && nodemon GeneralCryptoStream.ts",
-    "test_dataprocessor": "cd DataProcessing && nodemon data_processor.ts"
+    "test_dataprocessor": "cd DataProcessing && nodemon data_processor.ts",
+    "test_redditstream": "cd Reddit && nodemon reddit_scraper.ts"
   },
   "author": "",
   "license": "ISC",

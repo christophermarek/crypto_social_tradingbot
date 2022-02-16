@@ -146,21 +146,21 @@ export const TwitterFeed: React.FC<TwitterFeedProps> = ({ twitter_24_hours, twit
             }
 
             // And mentions might only be seconds apart. So 
-            for(let n = 0; n < serverDataForCoinByTimeFrame.length; n++){
+            for (let n = 0; n < serverDataForCoinByTimeFrame.length; n++) {
                 let date = new Date(serverDataForCoinByTimeFrame[n].post_date);
                 // find entry for this hour in price list
-                for(let m = 0; m < plot_data.length; m++){
-                    if(plot_data[m].ref_date.getUTCMonth() === date.getUTCMonth() && plot_data[m].ref_date.getUTCDay() === date.getUTCDay() && plot_data[m].ref_date.getUTCHours() === date.getUTCHours() ){
+                for (let m = 0; m < plot_data.length; m++) {
+                    if (plot_data[m].ref_date.getUTCMonth() === date.getUTCMonth() && plot_data[m].ref_date.getUTCDay() === date.getUTCDay() && plot_data[m].ref_date.getUTCHours() === date.getUTCHours()) {
                         let mentions = serverDataForCoinByTimeFrame[n].keyword_map[`${coin_name}`]
                         // match found, now append mentions
-                        if(mentions !== undefined){
+                        if (mentions !== undefined) {
                             plot_data[m].z = plot_data[m].z + mentions
                         }
                     }
                 }
             }
 
-            
+
         }
 
 
@@ -183,34 +183,16 @@ export const TwitterFeed: React.FC<TwitterFeedProps> = ({ twitter_24_hours, twit
                             left: 20,
                             bottom: 5,
                         }}
-                        >
-                        <CartesianGrid strokeDasharray="3 3" />
+                    >
+                        <CartesianGrid />
                         <XAxis dataKey="x" />
                         <YAxis yAxisId="left" />
-                        <YAxis yAxisId="right" orientation="right"/>
+                        <YAxis yAxisId="right" orientation="right" />
 
                         <Tooltip cursor={{ strokeDasharray: '1 1' }} animationDuration={0} />
                         <Line yAxisId="left" type="monotone" dataKey="y" stroke="#8884d8" activeDot={{ r: 8 }} />
                         <Line yAxisId="right" type="monotone" dataKey="z" stroke="#82ca9d" />
-                        </LineChart>
-
-                    // <ScatterChart
-                    //     width={1000}
-                    //     height={500}
-                    //     margin={{
-                    //         top: 0,
-                    //         right: 10,
-                    //         bottom: 0,
-                    //         left: 20,
-                    //     }}
-                    // >
-                    //     <CartesianGrid />
-                    //     <XAxis dataKey="x" name="Date" unit="DD/MM/YY" />
-                    //     <YAxis type="number" dataKey="y" name="price" unit="USD" />
-                    //     <Tooltip cursor={{ strokeDasharray: '1 1' }} animationDuration={0} />
-                    //     <Scatter name="Price vs Mentions" data={plot_data} fill="#8884d8" />
-                    // </ScatterChart >
-
+                    </LineChart>
                 )
         )
     }

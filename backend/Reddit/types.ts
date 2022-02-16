@@ -1,4 +1,12 @@
-interface api_comment_data {
+export interface reddit_comment_for_db_type {
+    comment_id: number,
+    created_utc: number,
+    permalink: string,
+    sentiment: number,
+    keyword_map: Map<string, number>
+}
+
+export interface api_comment_data {
     subreddit_id: string;
     approved_at_utc?: any;
     author_is_blocked: boolean;

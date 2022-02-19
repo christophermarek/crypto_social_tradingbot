@@ -1,9 +1,16 @@
 export interface reddit_comment_for_db_type {
-    comment_id: number,
+    _id: string,
     created_utc: number,
     permalink: string,
     sentiment: number,
     keyword_map: Map<string, number>
+}
+
+export interface reddit_stream_type {
+    comment_id: string;
+    comment_text: string,
+    created_utc: number,
+    permalink: string
 }
 
 export interface api_comment_data {

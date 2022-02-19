@@ -1,5 +1,6 @@
 import { stringify } from "querystring";
 import { io } from "../app";
+import { reddit_comment_for_db_type, reddit_stream_type } from "../Reddit/types";
 import { TwitterStreamData } from "../Twitter_Streams/StreamTypes";
 
 
@@ -16,4 +17,12 @@ export const send_over_socket = async (datasource_type: string, stream_data: Twi
     }
     
 
+}
+
+export const send_reddit_over_socket = async(eventName: string, reddit_comment: reddit_stream_type) => {
+    try{
+        io.emit(eventName, reddit_comment);
+    } catch(error){
+        console.log(`error sending over socket: ${eventName}`);
+    }
 }

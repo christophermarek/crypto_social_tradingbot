@@ -7,6 +7,7 @@ import routes from './routes';
 import { general_crypto_stream } from './Twitter_Streams/GeneralCryptoStream';
 // import websockets from './websockets';
 import { Server } from 'socket.io';
+import { start_reddit_scraper_executor } from './Reddit/reddit_scraper';
 
 
 const app = express();
@@ -50,6 +51,10 @@ server.listen(port, () => {
                     console.log('Starting up General Crypto Stream');
                     general_crypto_stream(process.env.TWITTER_BEARER_TOKEN);
                     break;
+                case 'RedditStream':
+                    console.log('Starting up Reddit Stream');
+                    start_reddit_scraper_executor();
+                    break;
             }
         }
     }
@@ -70,7 +75,8 @@ interface twitter_stream {
 
 export const twitter_streams: twitter_stream[] = [
     { name: 'SchiffStream', active: false },
-    { name: 'GeneralCryptoStream', active: true }
+    { name: 'GeneralCryptoStream', active: true },
+    { name: 'RedditStream', active: true }
 ]
 
 app.use(cors())

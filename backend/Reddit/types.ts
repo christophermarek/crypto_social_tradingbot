@@ -91,3 +91,22 @@ export interface api_comment_data {
     mod_note?: any;
     link_url: string;
 }
+
+export interface Child {
+    kind: string;
+    data: api_comment_data;
+}
+
+export interface Data {
+    after: string;
+    dist: number;
+    modhash: string;
+    geo_filter: string;
+    children: Child[];
+    before?: any;
+}
+
+export interface RootObject {
+    kind: string;
+    data: Data;
+}

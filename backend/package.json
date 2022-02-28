@@ -9,7 +9,8 @@
     "bot": "cd KucoinBot && nodemon tradingbot_kucoin.ts",
     "test_stream": "cd Twitter_Streams && nodemon GeneralCryptoStream.ts",
     "test_dataprocessor": "cd DataProcessing && nodemon data_processor.ts",
-    "test_redditstream": "cd Reddit && nodemon reddit_scraper.ts"
+    "test_redditstream": "cd Reddit && nodemon reddit_scraper.ts",
+    "test_historicalscrape": "cd Reddit && nodemon historical_scrape.ts"
   },
   "author": "",
   "license": "ISC",

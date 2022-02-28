@@ -6,6 +6,8 @@
 }
 #left{
     width: 50%;
+    height: 100vh;
+    overflow-y: scroll;
 }
 #right{
     width: 50%;

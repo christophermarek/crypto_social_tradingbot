@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import { Bots } from './Bots';
-import { TwitterFeed } from './TwitterFeed';
+import { TwitterFeed } from './FeedDisplay';
 import { TwitterFeedProps, Twitter_Table_Row } from './Types/TwitterFeed';
-import { getAllBotInfo, getSchiffTweets, getTwitterCoinDataByTimeFrame } from './API'
-import { APIAllBotInfo, APISchiffTweets, TwiitterStreamType } from './Types/API';
+import { getAllBotInfo, getRedditCoinDataByTimeFrame, getSchiffTweets, getTwitterCoinDataByTimeFrame } from './API'
+import { APIAllBotInfo, APISchiffTweets, reddit_comment_for_db_type, TwiitterStreamType } from './Types/API';
 
 function App() {
 
@@ -23,9 +23,10 @@ function App() {
             // CHANGE THIS To 24 hours once real time stream is up
             let data24hr = (await getTwitterCoinDataByTimeFrame(30)).data;
             let data1week = (await getTwitterCoinDataByTimeFrame(168)).data;
-    
+            let data1week_reddit = (await getRedditCoinDataByTimeFrame(168)).data;
             setTwitterData24Hours(data24hr)
             setTwitterDataOneWeek(data1week);
+            setreddit_one_week(data1week_reddit);
         }
 
         loadDataFromServer()
@@ -38,6 +39,7 @@ function App() {
     const [allBotInfo, setAllBotInfo] = useState<APIAllBotInfo[] | undefined>(undefined);
     const [twitterData24Hours, setTwitterData24Hours] = useState<TwiitterStreamType[] | undefined>(undefined)
     const [twitterDataOneWeek, setTwitterDataOneWeek] = useState<TwiitterStreamType[] | undefined>(undefined)
+    const [reddit_one_week, setreddit_one_week] = useState<reddit_comment_for_db_type[] | undefined>(undefined) 
 
     const coingeckoUrl = (date: string) => {
         return `https://api.coingecko.com/api/v3/coins/list?include_platform=true`;
@@ -80,8 +82,8 @@ function App() {
                 <input type='button' className='navBtn' value='DATA' onClick={() => setPageSelected('feed')} />
             </div>
 
-            {pageSelected === 'feed' && twitterData24Hours !== undefined && twitterDataOneWeek &&
-                <TwitterFeed twitter_24_hours={twitterData24Hours} twitter_one_week={twitterDataOneWeek}/>
+            {pageSelected === 'feed' && twitterData24Hours !== undefined && twitterDataOneWeek && reddit_one_week &&
+                <TwitterFeed twitter_24_hours={twitterData24Hours} twitter_one_week={twitterDataOneWeek} reddit_one_week={reddit_one_week}/>
             }
 
             {pageSelected === 'bots' &&

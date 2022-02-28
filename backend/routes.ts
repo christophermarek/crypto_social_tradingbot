@@ -1,6 +1,6 @@
 import { Router } from "express"
 import { twitter_streams } from "./app"
-import { getAllTwitterStream, getTwitterCoinDataByTimeFrame, getTwitterCoinDataByTimeFrameAndName } from "./DataProcessing/twitter_stream_backend"
+import { getAllTwitterStream, getTwitterCoinDataByTimeFrame, getTwitterCoinDataByTimeFrameAndName } from "./Twitter_Streams/twitter_stream_backend"
 import { getAllRedditStream, getRedditCoinDataByTimeFrame, getRedditCoinDataByTimeFrameAndName } from "./Reddit/reddit_backend"
 import { getAllSchiffTweets } from "./Twitter_Streams/SchiffStreamBackend"
 

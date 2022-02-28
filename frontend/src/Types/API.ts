@@ -26,3 +26,11 @@ export interface TwiitterStreamType {
     },
     keyword_map: Map<string, number>
 }
+
+export interface reddit_comment_for_db_type {
+    _id: string,
+    created_utc: number,
+    permalink: string,
+    sentiment: number,
+    keyword_map: Map<string, number>
+}

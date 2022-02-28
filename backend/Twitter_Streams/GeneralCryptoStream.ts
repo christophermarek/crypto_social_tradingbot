@@ -2,7 +2,7 @@
 import TwitterApi, { ETwitterStreamEvent } from 'twitter-api-v2';
 import { processes_stream_data } from '../DataProcessing/data_processor';
 import { send_over_socket } from '../Sockets/socket';
-import { sample } from './sample_general_twitterstream';
+import { sample } from '../OfflineData/sample_general_twitterstream';
 
 export const general_crypto_stream = async (bearer_token) => {
 

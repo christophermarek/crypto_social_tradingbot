@@ -1,7 +1,7 @@
 import { type } from "os";
-import { sample } from "../Twitter_Streams/sample_general_twitterstream";
+import { sample } from "../OfflineData/sample_general_twitterstream";
 import { TwitterStreamData } from "../Twitter_Streams/StreamTypes";
-import { TwitterStream } from "./twitter_stream_backend";
+import { TwitterStream } from "../Twitter_Streams/twitter_stream_backend";
 
 
 const key_words = [
